@@ -2,6 +2,7 @@
 
 namespace App\Entity\gestion_de_reservation;
 
+use App\Entity\gestion_user\User;
 use App\Repository\gestion_de_reservation\BookingRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

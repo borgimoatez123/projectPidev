@@ -256,6 +256,55 @@ class BookingController extends AbstractController
         ]);
     }
 
+    #[Route('/booking/update/{id}', name: 'app_booking_update')]
+    public function update(Request $request, Booking $booking, EntityManagerInterface $entityManager): Response
+    {
+        $flights = $entityManager->getRepository(Flight::class)->findAll();
+        $hotels = $entityManager->getRepository(Hotel::class)->findAll();
+        $transports = $entityManager->getRepository(Transport::class)->findAll();
+        $conferenceLocations = $entityManager->getRepository(ConferenceLocation::class)->findAll();
+    
+        $form = $this->createForm(BookingType::class, $booking);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Update booking details
+            $booking->setBookingDate(new \DateTime());
+            $booking->setStatus('Updated');
+            
+            // Calculate total price
+            $totalPrice = 0;
+            if ($booking->getFlight()) {
+                $totalPrice += $booking->getFlight()->getPrice();
+            }
+            if ($booking->getHotel()) {
+                $totalPrice += $booking->getHotel()->getPricePerNight();
+            }
+            if ($booking->getTransport()) {
+                $totalPrice += $booking->getTransport()->getPrice();
+            }
+            if ($booking->getConferenceLocation()) {
+                $totalPrice += $booking->getConferenceLocation()->getPricePerDay();
+            }
+            
+            $booking->setPriceTotal($totalPrice);
+            
+            $entityManager->flush();
+    
+            $this->addFlash('success', 'Booking updated successfully!');
+            return $this->redirectToRoute('app_booking_list');
+        }
+    
+        return $this->render('booking/update.html.twig', [
+            'form' => $form->createView(),
+            'booking' => $booking,
+            'flights' => $flights,
+            'hotels' => $hotels,
+            'transports' => $transports,
+            'conferenceLocations' => $conferenceLocations,
+        ]);
+    }
+
     #[Route('/booking/{id}', name: 'app_booking_delete', methods: ['POST', 'DELETE'])]
     public function delete(Request $request, int $id, BookingRepository $bookingRepository, EntityManagerInterface $entityManager): Response
     {
