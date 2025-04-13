@@ -1,0 +1,175 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Booking Details #{{ booking.id }}
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		<h1 class="mb-4">Booking Details #{{ booking.id }}</h1>
+
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		{% for message in app.flashes('error') %}
+			<div class="alert alert-danger">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		<div class="row">
+			<div class="col-md-6">
+				<div class="card mb-4">
+					<div class="card-header">
+						<h5 class="mb-0">Basic Information</h5>
+					</div>
+					<div class="card-body">
+						<p>
+							<strong>Status:</strong>
+							<span class="badge {% if booking.status == 'confirmed' %}bg-success{% elseif booking.status == 'not_confirmed' %}bg-danger{% else %}bg-warning{% endif %}">
+								{{ booking.status|default('pending') }}
+							</span>
+						</p>
+						<p>
+							<strong>Booking Date:</strong>
+							{{ booking.bookingDate|date('Y-m-d H:i') }}</p>
+						<p>
+							<strong>User Email:</strong>
+							{{ booking.userEmail }}</p>
+						<p>
+							<strong>Total Price:</strong>
+							${{ booking.priceTotal }}</p>
+					</div>
+				</div>
+
+				{% if booking.airlines %}
+					<div class="card mb-4">
+						<div class="card-header">
+							<h5 class="mb-0">Flight Details</h5>
+						</div>
+						<div class="card-body">
+							<p>
+								<strong>Airline:</strong>
+								{{ booking.airlines }}</p>
+							<p>
+								<strong>Departure Time:</strong>
+								{{ booking.departureTime|date('H:i') }}</p>
+							<p>
+								<strong>Return Time:</strong>
+								{{ booking.backTime|date('H:i') }}</p>
+						</div>
+					</div>
+				{% endif %}
+
+				{% if booking.hotelName %}
+					<div class="card mb-4">
+						<div class="card-header">
+							<h5 class="mb-0">Hotel Details</h5>
+						</div>
+						<div class="card-body">
+							<p>
+								<strong>Hotel Name:</strong>
+								{{ booking.hotelName }}</p>
+							<p>
+								<strong>City:</strong>
+								{{ booking.hotelCity }}</p>
+						</div>
+					</div>
+				{% endif %}
+			</div>
+
+			<div class="col-md-6">
+				{% if booking.transportType %}
+					<div class="card mb-4">
+						<div class="card-header">
+							<h5 class="mb-0">Transport Details</h5>
+						</div>
+						<div class="card-body">
+							<p>
+								<strong>Type:</strong>
+								{{ booking.transportType }}</p>
+							<p>
+								<strong>Description:</strong>
+								{{ booking.transportDescription }}</p>
+						</div>
+					</div>
+				{% endif %}
+
+				{% if booking.conferenceLocation %}
+					<div class="card mb-4">
+						<div class="card-header">
+							<h5 class="mb-0">Conference Details</h5>
+						</div>
+						<div class="card-body">
+							<p>
+								<strong>Location:</strong>
+								{{ booking.conferenceLocation }}</p>
+							<p>
+								<strong>City:</strong>
+								{{ booking.conferenceCity }}</p>
+						</div>
+					</div>
+				{% endif %}
+
+				{% if booking.eventName %}
+					<div class="card mb-4">
+						<div class="card-header">
+							<h5 class="mb-0">Event Details</h5>
+						</div>
+						<div class="card-body">
+							<p>
+								<strong>Event Name:</strong>
+								{{ booking.eventName }}</p>
+							<p>
+								<strong>Start Date:</strong>
+								{{ booking.eventDateDebut|date('Y-m-d') }}</p>
+							<p>
+								<strong>End Date:</strong>
+								{{ booking.eventDateFin|date('Y-m-d') }}</p>
+						</div>
+					</div>
+				{% endif %}
+
+				{% if booking.specialRequests %}
+					<div class="card mb-4">
+						<div class="card-header">
+							<h5 class="mb-0">Special Requests</h5>
+						</div>
+						<div class="card-body">
+							<p>{{ booking.specialRequests }}</p>
+						</div>
+					</div>
+				{% endif %}
+
+				{% if booking.status != 'confirmed' and booking.status != 'not_confirmed' %}
+					<div class="card">
+						<div class="card-header">
+							<h5 class="mb-0">Actions</h5>
+						</div>
+						<div class="card-body">
+							<form action="{{ path('admin_booking_update_status', {'id': booking.id}) }}" method="POST" class="d-inline">
+								<button type="submit" name="status" value="confirmed" class="btn btn-success me-2">
+									<i class="fas fa-check"></i>
+									Confirm Booking
+								</button>
+								<button type="submit" name="status" value="not_confirmed" class="btn btn-danger">
+									<i class="fas fa-times"></i>
+									Reject Booking
+								</button>
+							</form>
+						</div>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+
+		<div class="mt-4">
+			<a href="{{ path('admin_bookings_list') }}" class="btn btn-secondary">
+				<i class="fas fa-arrow-left"></i>
+				Back to List
+			</a>
+		</div>
+	</div>
+{% endblock %}
