@@ -20,6 +20,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BookinglistController extends AbstractController
 {
+    private string $stripeSecretKey;
+
+    public function __construct(string $stripeSecretKey)
+    {
+        $this->stripeSecretKey = $stripeSecretKey;
+    }
+
     #[Route('/bookings/user/{userid}', name: 'bookings_by_user')]
     public function showBookingsByUser(int $userid, EntityManagerInterface $entityManager): Response
     {
@@ -206,4 +213,13 @@ class BookinglistController extends AbstractController
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
     }
+    
+    // In all payment methods, replace Stripe::setApiKey() with:
+    Stripe::setApiKey($this->stripeSecretKey);
+    
+    // Remove the hardcoded key from these locations:
+    // - Line 63
+    // - Line 101
+    // - Line 169
+    // - Any other instances
 }

@@ -1,0 +1,4 @@
+/.env.local
+
+# Secrets
+/config/secrets/prod/prod.decrypt.private.php
