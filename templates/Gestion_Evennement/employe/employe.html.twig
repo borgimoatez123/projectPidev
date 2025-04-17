@@ -1,0 +1,49 @@
+{% extends 'Gestion_Evennement/base.html.twig' %}
+
+{% block body %}
+<div class="row">
+    {% for assignation in assignations %}
+        {% set event = assignation.event %}
+        <div class="col-md-4">
+            <div class="card shadow-sm border rounded-4 p-3 mb-4" style="border: 3px solid #e02454;">
+                {% if event.imagePath %}
+                    <img src="{{ asset('uploads/events/' ~ event.imagePath) }}" class="card-img-top" alt="Event Image" style="height: 200px; object-fit: cover;">
+                {% else %}
+                    <div class="card-img-top bg-secondary" style="height: 200px; display: flex; align-items: center; justify-content: center;">
+                        <span class="text-white">No Image</span>
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ event.nom }}</h5>
+                    <p class="card-text"><strong>Description:</strong> {{ event.description|slice(0, 100) ~ (event.description|length > 100 ? '...' : '') }}</p>
+                    <p><strong>Type:</strong> {{ event.type }}</p>
+                    <p><strong>Location:</strong> {{ event.lieuEvenement }}</p>
+                    <p><strong>Date début:</strong> {{ event.dateDebut|date('d/m/Y') }}</p>
+                    <p><strong>Date fin:</strong> {{ event.dateFin|date('d/m/Y') }}</p>
+                    <p><strong>Statut:</strong> 
+                        {% if assignation.status == 'Accepted' %}
+                            <span class="text-success">Accepté</span>
+                        {% elseif assignation.status == 'Rejected' %}
+                            <span class="text-danger">Refusé</span>
+                        {% else %}
+                            <span class="text-warning">En attente</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<style>
+    .btn-meet {
+        background-color: #003a66 !important;
+        border-color: #e02454;
+        color: white !important;
+    }
+    .btn-meet:hover {
+        background-color: #c81e48 !important;
+        border-color: #c81e48 !important;
+    }
+</style>
+{% endblock %}

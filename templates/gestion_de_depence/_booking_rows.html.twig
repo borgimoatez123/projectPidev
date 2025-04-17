@@ -1,0 +1,9 @@
+{% for booking in bookings %}
+    <tr>
+        <td>{{ booking.bookingId }}</td>
+        <td>{{ booking.nameEvement }}</td>
+        <td>{{ booking.bookingDate|date('Y-m-d') }}</td>
+        <td>{{ booking.status }}</td>
+        <td>${{ booking.priceTotal }}</td>
+    </tr>
+{% endfor %}

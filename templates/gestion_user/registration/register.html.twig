@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const roleField = document.querySelector('#registration_form_role');
+            const montantField = document.querySelector('#montant-container');
+            
+            function toggleMontantField() {
+                if (roleField.value === 'SPONSOR') {
+                    montantField.style.display = 'block';
+                } else {
+                    montantField.style.display = 'none';
+                }
+            }
+
+            roleField.addEventListener('change', toggleMontantField);
+            toggleMontantField(); // Initial check
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="h3 mb-3 text-center">Create Account</h1>
+
+                        {{ form_start(registrationForm) }}
+                            <div class="mb-3">
+                                {{ form_label(registrationForm.nom) }}
+                                {{ form_widget(registrationForm.nom, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(registrationForm.nom) }}
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form_label(registrationForm.email) }}
+                                {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(registrationForm.email) }}
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form_label(registrationForm.telephone) }}
+                                {{ form_widget(registrationForm.telephone, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(registrationForm.telephone) }}
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form_label(registrationForm.role) }}
+                                {{ form_widget(registrationForm.role, {
+                                    'attr': {
+                                        'class': 'form-select',
+                                        'placeholder': 'Choose your role'
+                                    }
+                                }) }}
+                                {{ form_errors(registrationForm.role) }}
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form_label(registrationForm.plainPassword.first) }}
+                                {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(registrationForm.plainPassword.first) }}
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form_label(registrationForm.plainPassword.second) }}
+                                {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(registrationForm.plainPassword.second) }}
+                            </div>
+
+                            <div class="mb-3" id="montant-container" style="display: none;">
+                                {{ form_label(registrationForm.montant) }}
+                                {{ form_widget(registrationForm.montant, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(registrationForm.montant) }}
+                            </div>
+
+                            <div class="mb-3">
+                                {{ form_label(registrationForm.imageFile) }}
+                                {{ form_widget(registrationForm.imageFile, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(registrationForm.imageFile) }}
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Register</button>
+                            </div>
+
+                            <div class="text-center mt-3">
+                                <p>Already have an account? <a href="{{ path('app_login') }}">Login here</a></p>
+                            </div>
+                        {{ form_end(registrationForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

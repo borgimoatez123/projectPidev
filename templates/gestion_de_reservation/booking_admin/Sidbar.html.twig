@@ -1,0 +1,111 @@
+<aside class="left-sidebar" style="background-color: #003a66 !important; border-right: 2px solid #e02454;">
+  <!-- Sidebar scroll-->
+  <div>
+    <!-- Logo -->
+    <div class="brand-logo d-flex align-items-center justify-content-between px-4 py-3">
+      <a href="{{ path('app_admin') }}" class="navbar-brand p-0 text-white d-flex align-items-center">
+        <img src="{{ asset('img/brand-logo.png') }}" class="img-fluid me-2" style="height: 40px;" alt="Logo">
+        <h1 class="fs-5 m-0" style="color: #ffffff;">Meet<span style="color: #e02454;">N</span>Trip</h1>
+      </a>
+      <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer text-white" id="sidebarCollapse">
+        <i class="ti ti-x fs-5"></i>
+      </div>
+    </div>
+
+    <!-- Sidebar navigation -->
+    <nav class="sidebar-nav scroll-sidebar" data-simplebar id="sidebarnav">
+      <ul class="pt-3" id="sidebarnav">
+
+        <li class="nav-small-cap text-white-50 px-4 mb-2">
+          <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+          <span class="hide-menu">DASHBOARD</span>
+        </li>
+
+        <li class="sidebar-item">
+          <a class="sidebar-link text-white px-4 py-2 d-flex align-items-center" href="{{ path('app_admin') }}">
+            <i class="ti ti-layout-dashboard me-2"></i>
+            <span class="hide-menu">Home</span>
+          </a>
+        </li>
+
+        <li class="nav-small-cap text-white-50 px-4 mt-4 mb-2">
+          <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+          <span class="hide-menu">MANAGEMENT</span>
+        </li>
+
+        <li class="sidebar-item">
+          <a class="sidebar-link text-white px-4 py-2 d-flex align-items-center" href="{{ path('admin_evenements') }}">
+            <i class="ti ti-calendar-event me-2"></i>
+            <span class="hide-menu">Event Management</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a class="sidebar-link text-white px-4 py-2 d-flex align-items-center" href="{{ path('admin_bookings_list') }}">
+            <i class="ti ti-book me-2"></i>
+            <span class="hide-menu">Reservation Management</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a class="sidebar-link text-white px-4 py-2 d-flex align-items-center" href="{{ path('admin_paid_bookings') }}">
+            <i class="ti ti-credit-card me-2"></i>
+            <span class="hide-menu">Payment Management</span>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+    <!-- End Sidebar navigation -->
+  </div>
+  <style>
+    .left-sidebar {
+      background-color: #003a66 !important;
+      border-right: 2px solid #e02454;
+      min-height: 100vh;
+    }
+  
+    .brand-logo h1 {
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  
+    .brand-logo h1 span {
+      color: #e02454;
+    }
+  
+    .sidebar-link {
+      color: #ffffff !important;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      border-left: 3px solid transparent;
+      transition: 0.3s ease;
+    }
+  
+    .sidebar-link:hover {
+      background-color: #004877;
+      border-left: 3px solid #e02454;
+      color: #e02454 !important;
+    }
+  
+    .sidebar-link i {
+      font-size: 18px;
+      margin-right: 10px;
+    }
+  
+    .nav-small-cap {
+      padding-left: 20px;
+      margin-top: 20px;
+      text-transform: uppercase;
+      font-size: 12px;
+      color: #cccccc !important;
+    }
+  
+    .close-btn i {
+      color: white;
+    }
+  </style>
+  
+</aside>

@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Your Bookings{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h2>Your Bookings</h2>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <form id="searchForm" class="input-group">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search by event name...">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Event Name</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Total Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="bookingsTableBody">
+                    {% for booking in bookings %}
+                        {% if booking.status == 'confirmed' %}
+                            <tr>
+                                <td>{{ booking.bookingId }}</td>
+                                <td>{{ booking.nameEvement }}</td>
+                                <td>{{ booking.bookingDate|date('Y-m-d') }}</td>
+                                <td>{{ booking.status }}</td>
+                                <td>${{ booking.priceTotal }}</td>
+                                <td>
+                                    <button 
+                                        class="btn btn-success pay-now"
+                                        data-booking-id="{{ booking.bookingId }}"
+                                        data-amount="{{ booking.priceTotal }}"
+                                    >
+                                        Pay Now
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% block javascripts %}
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        var stripe = Stripe('pk_test_51Qwrrl4gBlnREYNzfUuXr4JMaNxTcDhQBYkE4VV4o9RcFNU7nyny0QhSDzlHGrh4gsPDtgnNF5lrOF83dwkKGPcz00sPo5cYsz');
+
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('pay-now')) {
+                const bookingId = e.target.dataset.bookingId;
+                const amount = e.target.dataset.amount;
+
+                fetch('/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ bookingId, amount }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.sessionId) {
+                        stripe.redirectToCheckout({ sessionId: data.sessionId });
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+
+        document.getElementById('searchForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const searchTerm = document.getElementById('searchInput').value;
+            const userid = {{ userid }};
+
+            fetch(`/bookings/search?userid=${userid}&event_name=${encodeURIComponent(searchTerm)}`)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('bookingsTableBody').innerHTML = html;
+                });
+        });
+    </script>
+    {% endblock %}
+{% endblock %}
